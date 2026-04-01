@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-clean-code",
+  "description": "Universal clean code refactoring plugin for Claude Code",
+  "owner": {
+    "name": "hham21"
+  },
+  "plugins": [
+    {
+      "name": "clean-code",
+      "description": "Universal clean code refactoring — apply 11 principles to any codebase with parallel batch processing",
+      "version": "1.0.0",
+      "author": {
+        "name": "hham21"
+      },
+      "source": "./plugins/clean-code",
+      "category": "development"
+    }
+  ]
+}
