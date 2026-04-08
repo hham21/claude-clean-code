@@ -69,6 +69,12 @@ claude plugins:install clean-code@claude-clean-code
 
 # With exclusions
 /clean-code @src/ exclude utils/legacy.ts
+
+# Only specific principles
+/clean-code @src/ only naming, dead code
+
+# Skip principles
+/clean-code @src/ skip parameter count, magic numbers
 ```
 
 ## How It Works
@@ -93,14 +99,14 @@ claude plugins:install clean-code@claude-clean-code
          |
          v
 +------------------------+
-|  Batch 1: 10 agents    |  <-- Each agent applies 11 principles to 1 file
-|  Batch 2: 10 agents    |
+|  Batch 1: N agents     |  <-- Dynamically sized (up to 10 per batch)
+|  Batch 2: N agents     |
 |  ...                   |
 +------------------------+
          |
          v
 +------------------------+
-|  Final verification    |  <-- lint + build check
+|  Final verification    |  <-- lint + build + test check
 +------------------------+
          |
          v
@@ -131,15 +137,17 @@ claude plugins:install clean-code@claude-clean-code
 ## Verification
 - lint: PASS
 - build: PASS
+- test: PASS
 ```
 
 ## Safety
 
 - **No functionality changes** — every edit is behavior-preserving
 - **Public interfaces untouched** — exported functions, types, and APIs are never modified
-- **Self-verification** — each agent checks its own diff for interface changes
-- **Lint/build validation** — auto-detected project tools verify nothing broke
-- **Resumable** — if interrupted, re-run and it picks up where it left off
+- **Self-verification** — each agent re-reads the file and compares public interfaces before/after
+- **Lint/build/test validation** — auto-detected project tools verify nothing broke
+- **Silent failure retry** — agents that report changes but produce no diff are automatically retried
+- **Resumable** — if interrupted, re-run and it picks up where it left off (batch mode)
 
 ## Requirements
 
@@ -155,11 +163,14 @@ Works with any language. The 11 principles are language-agnostic. When available
 
 | Project Type | Detected Tools |
 |-------------|----------------|
-| Node.js | `package.json` scripts (lint, build, typecheck) |
-| Python | ruff, flake8, mypy, pylint |
-| Rust | `cargo clippy`, `cargo check` |
-| Go | `go vet`, `golangci-lint` |
-| Make-based | `make lint`, `make check` |
+| Node.js | `package.json` scripts (lint, build, test, typecheck) |
+| Python | ruff, flake8, mypy, pytest |
+| Dart | `dart analyze`, `dart test`, `dart format` |
+| Rust | `cargo clippy`, `cargo check`, `cargo test` |
+| Go | `go vet`, `golangci-lint`, `go test` |
+| Swift | `swiftlint`, `swift build`, `swift test` |
+| Java/Gradle/Maven | project-specific lint, build, test |
+| Make-based | `make lint`, `make check`, `make test` |
 | None found | Principles applied without verification |
 
 ## License
