@@ -99,7 +99,7 @@ Create `.clean-code/progress.json`:
 {
   "target": "<path or 'project'>",
   "totalFiles": 42,
-  "batchSize": 8,
+  "batchSize": 9,
   "completed": [],
   "failed": [],
   "currentBatch": 0,
@@ -175,10 +175,10 @@ When all files are processed (`completed.length + failed.length >= totalFiles`, 
 2. Run detected build command from project root (if available)
 3. Run detected test command from project root (if available)
 4. If errors found, attempt to fix (2 attempts max)
-4. Run `git diff --stat` to collect change statistics
-5. Aggregate all agent reports to build the summary
-6. Delete the `.clean-code/` directory entirely (`rm -rf .clean-code/`)
-7. Output the final summary report
+5. Run `git diff --stat` to collect change statistics
+6. Aggregate all agent reports to build the summary
+7. Delete the `.clean-code/` directory entirely (`rm -rf .clean-code/`)
+8. Output the final summary report
 
 **Final summary report format:**
 

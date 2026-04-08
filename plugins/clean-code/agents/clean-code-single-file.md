@@ -30,7 +30,7 @@ The orchestrator may also include:
 - **No new exports**: When extracting helper functions, never make them public/exported.
 - **No cross-file refactoring**: Do not extract code to new files, do not move imports between files, do not change re-exports.
 - **NEVER use git commands**: Do NOT run ANY git command — no `git stash`, `git reset`, `git checkout`, `git restore`, `git clean`, `git diff`, or any other git command. Multiple agents run in parallel on the same working directory, and ANY git command will corrupt other agents' work. If you need to verify your changes, re-read the file instead. If verification fails, report the error and stop. The orchestrator handles all git operations.
-- **NEVER run project-wide commands**: Do NOT run lint, build, test, typecheck, or any other command that scans the entire project. These commands read/write shared state (lock files, caches, build artifacts) and will conflict with other parallel agents. You may ONLY run a per-file formatter command if one was provided.
+- **NEVER run project-wide commands**: Do NOT run lint, build, test, typecheck, or any other command that writes shared state (lock files, caches, build artifacts). These will conflict with other parallel agents. You may ONLY run a per-file formatter command if one was provided. Read-only searches (Grep tool) are allowed for cross-file identifier checks.
 
 ## Confidence Rule
 
